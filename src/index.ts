@@ -122,4 +122,4 @@ addEventListener("fetch", (event) =>
 );
 
 
- self.addEventListener('fetch', yoga)
+ addEventListener('fetch', yoga)
