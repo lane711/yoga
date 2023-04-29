@@ -1,1 +1,5 @@
 # yoga
+
+```
+npm start
+```

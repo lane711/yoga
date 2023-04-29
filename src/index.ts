@@ -1,6 +1,17 @@
-import { createYoga, createSchema, Repeater } from 'graphql-yoga'
+import { createYoga, createSchema, Repeater } from "graphql-yoga";
+import { Router } from "itty-router";
+const router = Router();
 
-declare const KVDATA: KVNamespace
+declare const KVDATA: KVNamespace;
+
+router.get("/", () => {
+  return new Response(
+    "Hello, world! This is the root page of your Worker template."
+  );
+});
+
+// 404 for everything else
+router.all("*", () => new Response("Not Found.", { status: 404 }));
 
 const yoga = createYoga({
   schema: createSchema({
@@ -41,36 +52,36 @@ const yoga = createYoga({
       Query: {
         todoList: async (_, { limit = 10, cursor }) =>
           KVDATA.list({
-            prefix: 'todo_',
+            prefix: "todo_",
             limit,
             cursor,
           }),
-        readFileAsText: (root, args) => KVDATA.get(args.name, 'text'),
-        readFileAsJson: (root, args) => KVDATA.get(args.name, 'json'),
+        readFileAsText: (root, args) => KVDATA.get(args.name, "text"),
+        readFileAsJson: (root, args) => KVDATA.get(args.name, "json"),
       },
       TodoKeyInfo: {
-        value: ({ name }: any) => KVDATA.get(name, 'text'),
+        value: ({ name }: any) => KVDATA.get(name, "text"),
       },
       Mutation: {
         addTodo: async (_, { content }) => {
-          const id = Date.now().toString()
-          await KVDATA.put(`todo_${Date.now()}`, content)
-          return id
+          const id = Date.now().toString();
+          await KVDATA.put(`todo_${Date.now()}`, content);
+          return id;
         },
         deleteTodo: (_, { id }) => {
-          KVDATA.delete(`todo_${id}`)
-          return true
+          KVDATA.delete(`todo_${id}`);
+          return true;
         },
         uploadFile: async (_, { file }: { file: File }) => {
-          console.log('file', file)
-          const name = file.name
-          const arrayBuffer = await file.arrayBuffer()
-          await KVDATA.put(`textFile_${name}`, arrayBuffer)
-          return true
+          console.log("file", file);
+          const name = file.name;
+          const arrayBuffer = await file.arrayBuffer();
+          await KVDATA.put(`textFile_${name}`, arrayBuffer);
+          return true;
         },
         deleteFile: async (_, { name }) => {
-          KVDATA.delete(`textFile_${name}`)
-          return true
+          KVDATA.delete(`textFile_${name}`);
+          return true;
         },
       },
       Subscription: {
@@ -79,20 +90,20 @@ const yoga = createYoga({
             new Repeater((push, end) => {
               const interval = setInterval(
                 () => push(new Date().toISOString()),
-                1000,
-              )
-              end.then(() => clearInterval(interval))
+                1000
+              );
+              end.then(() => clearInterval(interval));
             }),
           resolve: (value) => value,
         },
         scheduled: {
           subscribe: () =>
             new Repeater((push, end) => {
-              const eventListener = (event: ScheduledEvent) => push(event)
-              self.addEventListener('scheduled', eventListener)
+              const eventListener = (event: ScheduledEvent) => push(event);
+              self.addEventListener("scheduled", eventListener);
               end.then(() =>
-                self.removeEventListener('scheduled', eventListener),
-              )
+                self.removeEventListener("scheduled", eventListener)
+              );
             }),
           resolve: (event) => event,
         },
@@ -100,6 +111,15 @@ const yoga = createYoga({
     },
   }),
   maskedErrors: false,
-})
+});
 
-self.addEventListener('fetch', yoga)
+
+
+
+// attach the router "handle" to the event handler
+addEventListener("fetch", (event) => 
+   event.respondWith(router.handle(event.request))
+);
+
+
+ self.addEventListener('fetch', yoga)
