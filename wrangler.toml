@@ -2,9 +2,14 @@ compatibility_date = "2022-02-21"
 name = "graphql-yoga"
 account_id = "f9d6328dc3115e621758a741dda3d5c4"
 workers_dev = true
-main = "src/index.ts"
+main = "src/index.tsx"
 compatibility_flags = ["streams_enable_constructors"]
 
 kv_namespaces = [
   { binding = "KVDATA", preview_id = "43d5f62ebc9f4e9cafa30671613cbfa0", id = "43d5f62ebc9f4e9cafa30671613cbfa0" }
 ]
+
+[[ d1_databases ]]
+binding = "DB" # i.e. available in your Worker on env.DB
+database_name = "sonicjs"
+database_id = "30baa933-ceb6-41ac-95a4-ce8b08cd2f41"
