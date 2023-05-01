@@ -1,10 +1,13 @@
 import { Hono } from "hono";
+import { graphql } from "./cms/graphql/router";
 
 const app = new Hono();
 
 export interface Env {
   DB: D1Database;
 }
+
+declare const KVDATA: KVNamespace;
 
 const Layout = (props: { children?: string }) => {
   return (
@@ -221,26 +224,33 @@ const Top = (props: { messages: string[] }) => {
   );
 };
 
-app.get("/", (c) => {
-  const messages = ["Good Morning", "Good Evening", "Good Night"];
-  return c.html(<Top messages={messages} />);
-});
+// app.get("/", (c) => {
+//   const messages = ["Good Morning", "Good Evening", "Good Night"];
+//   return c.html(<Top messages={messages} />);
+// });
 
-app.get("/data", async (c) => {
-    const { results } = await c.env.DB.prepare(
-      "SELECT * FROM Customers WHERE CompanyName = ?"
-      )
-      .bind("Bs Beverages")
-      .all();
-    // return Response.json(results);
+app.get("/", async (c) => {
+  const { results } = await c.env.DB.prepare(
+    "SELECT * FROM Customers WHERE CompanyName = ?"
+  )
+    .bind("Bs Beverages")
+    .all();
+  // return Response.json(results);
 
-    const list = results.map(r => r.ContactName);
-    console.log('data===>', list);
-  
+  const list = results.map((r) => r.ContactName);
+  console.log("data===>", list);
+
   return c.html(<Top messages={list} />);
 });
 
-// import { graphql } from "./cms/graphql/router";
+app.get("/new", async (c) => {
+  KVDATA.put(`todo_${Date.now()}`, JSON.stringify({ "foo": "bar" }));
+
+  const list = [];
+
+  return c.html(<Top messages={list} />);
+});
+
 // import { adminRouter } from "./cms/admin/router";
 
 // const app = new Hono()
@@ -257,7 +267,7 @@ app.get("/data", async (c) => {
 //   return new Response("About us");
 // });
 
-// // app.all("/graphql", graphql);
+app.all("/graphql", graphql.handle);
 
 // const app = new Hono()
 
@@ -287,8 +297,8 @@ app.get("/data", async (c) => {
 //   return c.html(<Top messages={messages} />)
 // })
 
-// // 404 for everything else
-// // app.all("*", () => new Response("Not Found.", { status: 404 }));
+// 404 for everything else
+app.all("*", () => new Response("Sorry, Not Found.", { status: 404 }));
 
 // // attach the router "handle" to the event handler
 // // addEventListener("fetch", (event) =>
