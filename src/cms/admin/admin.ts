@@ -28,7 +28,6 @@
 //   export default app
 
 export function setAdmin(app) {
-  app.get("/admin", () => {
-    return new Response('hello admin');
-  });
+  app.get('/admin', (c) => c.text('admin'))
+
 }
