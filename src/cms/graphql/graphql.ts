@@ -2,7 +2,13 @@ import { createYoga, createSchema, Repeater } from "graphql-yoga";
 
 declare const KVDATA: KVNamespace;
 
-export const graphql = createYoga({
+export function setupGraphQl(app){
+  app.get("/graphql", () => {
+    return graphql.handle;
+  });
+}
+
+const graphql = createYoga({
     schema: createSchema({
       typeDefs: /* GraphQL */ `
         scalar File

@@ -1,10 +1,8 @@
-import { Hono } from 'hono'
-import { graphql } from "./cms/graphql/router";
+import { Hono } from "hono";
+import { setupGraphQl } from "./cms/graphql/graphql";
 import { setAdmin } from "./cms/admin/admin";
 
-
-const app = new Hono()
-
+const app = new Hono();
 
 declare const KVDATA: KVNamespace;
 
@@ -22,9 +20,9 @@ app.get("/about", () => {
 
 // app.all("/admin", adminRouter.handle);
 setAdmin(app);
+setupGraphQl(app);
 
 // 404 for everything else
 app.all("*", () => new Response("Not Found.", { status: 404 }));
 
-export default app
-
+export default app;
