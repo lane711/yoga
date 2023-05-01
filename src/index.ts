@@ -1,32 +1,30 @@
-import { Router } from "itty-router";
-
+import { Hono } from 'hono'
 import { graphql } from "./cms/graphql/router";
-import { adminRouter } from "./cms/admin/router";
+import { setAdmin } from "./cms/admin/admin";
 
 
-const router = Router();
+const app = new Hono()
+
 
 declare const KVDATA: KVNamespace;
 
-router.get("/", () => {
+app.get("/", () => {
   return new Response(
     "Hello, world! This is the root page of your Worker template."
   );
 });
 
-router.get("/about", () => {
+app.get("/about", () => {
   return new Response("About us");
 });
 
-router.all("/graphql", graphql);
+// app.all("/graphql", graphql);
 
-router.all("/admin", adminRouter.handle);
-
+// app.all("/admin", adminRouter.handle);
+setAdmin(app);
 
 // 404 for everything else
-router.all("*", () => new Response("Not Found.", { status: 404 }));
+app.all("*", () => new Response("Not Found.", { status: 404 }));
 
-// attach the router "handle" to the event handler
-addEventListener("fetch", (event) =>
-  event.respondWith(router.handle(event.request))
-);
+export default app
+
