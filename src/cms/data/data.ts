@@ -16,8 +16,8 @@ export function getId(length) {
   return res;
 }
 
-export function getData(db) {
-  return db.list({ prefix: "" });
+export function getData(db, prefix = '') {
+  return db.list({ prefix});
 }
 
 export function putData(db, site, contentType, value) {

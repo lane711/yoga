@@ -1,5 +1,5 @@
-import { jsx } from 'hono/jsx'
-import { getData, putData } from '../data/data';
+import { jsx } from "hono/jsx";
+import { getData, putData } from "../data/data";
 declare const KVDATA: KVNamespace;
 
 const Layout = (props: { children?: string }) => {
@@ -217,25 +217,36 @@ const Top = (props: { messages: string[] }) => {
   );
 };
 
+export async function loadAdmin(context) {
+  console.log("context-->", context.env);
 
-export async function loadAdmin(context){
+  //     await putData(context.env.KVDATA, 'site1', 'blog', {title: 'post1'});
 
-    console.log('context-->', context.env)
-
-
-//     await putData(context.env.KVDATA, 'site1', 'blog', {title: 'post1'});
-
-//       console.log('context-->', context.env)
+  //       console.log('context-->', context.env)
 
   const data = await getData(context.env.KVDATA);
 
-
-  const list = data.keys.map(item => item.name)
+  const list = data.keys.map((item) => item.name);
 
   console.log("list-->", list);
 
+  return <Top messages={list} />;
+}
 
-    return  <Top messages={list} />
+export async function loadModules(context) {
+  // console.log('context-->', context.env)
+
+  await putData(context.env.KVDATA, "site1", "module", { title: "blog" });
+
+  //       console.log('context-->', context.env)
+
+  const data = await getData(context.env.KVDATA, 'site1::module');
+
+  const list = data.keys.map((item) => item.name);
+
+  console.log("list-->", list);
+
+  return <Top messages={list} />;
 }
 
 // app.get("/new", async (c) => {
@@ -245,5 +256,3 @@ export async function loadAdmin(context){
 
 //   return c.html(<Top messages={list} />);
 // });
-
-
