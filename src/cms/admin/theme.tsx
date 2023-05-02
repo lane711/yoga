@@ -1,5 +1,5 @@
 import { jsx } from "hono/jsx";
-import { getById, getData, putData } from "../data/data";
+import { getById, getData, getDataByPrefix, putData } from "../data/data";
 declare const KVDATA: KVNamespace;
 
 const Layout = (props: { children?: string }) => {
@@ -13,6 +13,8 @@ const Layout = (props: { children?: string }) => {
           href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/tailwind.min.css"
           rel="stylesheet"
         ></link>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"></link>
+
       </head>
 
       <body>
@@ -92,6 +94,28 @@ const Layout = (props: { children?: string }) => {
                   </svg>
                   <span class="ml-2 text-sm font-medium">Modules</span>
                 </a>
+
+                <a
+                  class="flex items-center w-full h-12 px-3 mt-2 rounded hover:bg-gray-700 hover:text-gray-300"
+                  href="/admin/content-types"
+                >
+                  <svg
+                    class="w-6 h-6 stroke-current"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                    />
+                  </svg>
+                  <span class="ml-2 text-sm font-medium">Content Types</span>
+                </a>
+
                 <a
                   class="flex items-center w-full h-12 px-3 mt-2 rounded hover:bg-gray-700 hover:text-gray-300"
                   href="/admin/users"
@@ -205,43 +229,32 @@ const Layout = (props: { children?: string }) => {
   );
 };
 
-const Top = (props: { messages: string[] }) => {
+const Top = (props: { items: object[] }) => {
   return (
     <Layout>
       <h1>Admin Panel</h1>
 
-      <table class="table-auto w-full text-gray-400">
-        <thead>
-          <tr>
-            <th>Song</th>
-            <th>Artist</th>
-            <th>Year</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>The Sliding Mr. Bones (Next Stop, Pottersville)</td>
-            <td>Malcolm Lockyer</td>
-            <td>1961</td>
-          </tr>
-          <tr>
-            <td>Witchy Woman</td>
-            <td>The Eagles</td>
-            <td>1972</td>
-          </tr>
-          <tr>
-            <td>Shining Star</td>
-            <td>Earth, Wind, and Fire</td>
-            <td>1975</td>
-          </tr>
-        </tbody>
-      </table>
-
       <ul>
-        {props.messages.map((message) => {
-          return <li>{message}</li>;
+        {props.items.map((item) => {
+          return (
+            <li>
+              <a href={item.path}>{item.title}</a>
+            </li>
+          );
         })}
       </ul>
+    </Layout>
+  );
+};
+
+const Form = (props: { title: string }) => {
+  return (
+    <Layout>
+      <h1>Admin Panel</h1>
+
+       form here for {props.title}
+
+
     </Layout>
   );
 };
@@ -253,50 +266,54 @@ export async function loadAdmin(context) {
 
   //       console.log('context-->', context.env)
 
-  const data = await getData(context.env.KVDATA);
+  const data = await getDataByPrefix(context.env.KVDATA);
 
   const list = data.keys.map((item) => item.name);
 
-  console.log("list-->", list);
-
-  return <Top messages={list} />;
+  return <Top items={list} />;
 }
 
 export async function loadModules(context) {
-  // console.log('context-->', context.env)
-
-  //   await putData(context.env.KVDATA, "site1", "module", { title: "blog" });
-
-  //       console.log('context-->', context.env)
-
-  const data = await getData(context.env.KVDATA, "site1::module");
+  const data = await getDataByPrefix(context.env.KVDATA, "site1::module");
 
   const list = data.keys.map((item) => item.name);
 
-  console.log("list-->", list);
-
-  return <Top messages={list} />;
+  return <Top items={list} />;
 }
 
 export async function loadSites(context) {
-  // console.log('context-->', context.env)
-
-  //   await putData(context.env.KVDATA, "host", "sites", [
-  //     { title: "Blue Website", id: "abcd1234" },
-  //     { title: "Green Website", id: "defg56789" },
-  //   ]);
-
-  //       console.log('context-->', context.env)
-
   const data = await getById(context.env.KVDATA, "host::sites");
-
-  console.log("data.keys", data);
 
   const list = data.map((item) => item.title);
 
-  //   console.log("list-->", list);
+  return <Top items={list} />;
+}
 
-  return <Top messages={list} />;
+export async function loadContentTypes(context) {
+  // await putData(context.env.KVDATA, 'site1', 'content-type', {title: 'blog-post'}, "site1::content-type::blog-post");
+
+  const data = await getDataByPrefix(context.env.KVDATA, "site1::content-type");
+  console.log("data", data.keys[0]);
+
+  const list = data.keys.map((item) => {
+    return {
+      title: item.name,
+      path: `/admin/content-types/${item.name}`,
+    };
+  });
+
+  return <Top items={list} />;
+}
+
+export async function loadContentType(context) {
+  // await putData(context.env.KVDATA, 'site1', 'content-type', {title: 'blog-post'}, "site1::content-type::blog-post");
+
+  const data = await getById(context.env.KVDATA, "site1::content-type::blog-post");
+  console.log("data", data.title);
+
+  // const list = data.map((item) => item.title);
+
+  return <Form title={data.title} />;
 }
 
 // app.get("/new", async (c) => {

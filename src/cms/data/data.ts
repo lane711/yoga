@@ -1,7 +1,7 @@
 // declare const KVDATA: KVNamespace;
 
-export function getKey(site, schema) {
-  return `${site}::${schema}::${getTicksSortKey()}::${getId(7)}`;
+export function getKey(site, schema, key = "") {
+  return key ?? `${site}::${schema}::${getTicksSortKey()}::${getId(7)}`;
 }
 
 function getTicksSortKey() {
@@ -16,7 +16,7 @@ export function getId(length) {
   return res;
 }
 
-export function getData(db, prefix = "") {
+export function getDataByPrefix(db, prefix = "") {
   return db.list({ prefix });
 }
 
@@ -24,9 +24,10 @@ export function getById(db, key) {
   return db.get(key, { type: "json" });
 }
 
-export function putData(db, site, contentType, value) {
-  const key = getKey(site, contentType);
-  return db.put(key, JSON.stringify(value));
+export function putData(db, site, contentType, value, key ="") {
+  const generatedKey = getKey(site, contentType, key);
+  console.log('generatedKey', generatedKey)
+  return db.put(generatedKey, JSON.stringify(value));
 }
 
 export function add(a, b) {

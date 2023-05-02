@@ -14,3 +14,9 @@ it("should generate a key", () => {
   expect(key.length).toBe(40);
 
 });
+
+it("should generate a key for a content type", () => {
+  const key = getKey("", "", "site1::content-type::blog-post");
+  console.log(key);
+  expect(key).toBe("site1::content-type::blog-post");
+});
