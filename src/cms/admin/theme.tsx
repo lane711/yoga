@@ -72,7 +72,8 @@ const Layout = (props: { children?: string }) => {
                   <span class="ml-2 text-sm font-medium">Content</span>
                 </a>
                 <a
-                  class="flex items-center w-full h-12 px-3 mt-2 text-gray-200 bg-gray-700 rounded"
+                  class="flex items-center w-full h-12 px-3 mt-2 rounded hover:bg-gray-700 hover:text-gray-300"
+                  // class="flex items-center w-full h-12 px-3 mt-2 text-gray-200 bg-gray-700 rounded"
                   href="/admin/modules"
                 >
                   <svg
@@ -207,10 +208,38 @@ const Layout = (props: { children?: string }) => {
 const Top = (props: { messages: string[] }) => {
   return (
     <Layout>
-      <h1>Hello Hono!</h1>
+      <h1>Admin Panel</h1>
+
+      <table class="table-auto w-full text-gray-400">
+        <thead>
+          <tr>
+            <th>Song</th>
+            <th>Artist</th>
+            <th>Year</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>The Sliding Mr. Bones (Next Stop, Pottersville)</td>
+            <td>Malcolm Lockyer</td>
+            <td>1961</td>
+          </tr>
+          <tr>
+            <td>Witchy Woman</td>
+            <td>The Eagles</td>
+            <td>1972</td>
+          </tr>
+          <tr>
+            <td>Shining Star</td>
+            <td>Earth, Wind, and Fire</td>
+            <td>1975</td>
+          </tr>
+        </tbody>
+      </table>
+
       <ul>
         {props.messages.map((message) => {
-          return <li>{message}!!</li>;
+          return <li>{message}</li>;
         })}
       </ul>
     </Layout>
@@ -236,7 +265,7 @@ export async function loadAdmin(context) {
 export async function loadModules(context) {
   // console.log('context-->', context.env)
 
-//   await putData(context.env.KVDATA, "site1", "module", { title: "blog" });
+  //   await putData(context.env.KVDATA, "site1", "module", { title: "blog" });
 
   //       console.log('context-->', context.env)
 
@@ -252,20 +281,20 @@ export async function loadModules(context) {
 export async function loadSites(context) {
   // console.log('context-->', context.env)
 
-//   await putData(context.env.KVDATA, "host", "sites", [
-//     { title: "Blue Website", id: "abcd1234" },
-//     { title: "Green Website", id: "defg56789" },
-//   ]);
+  //   await putData(context.env.KVDATA, "host", "sites", [
+  //     { title: "Blue Website", id: "abcd1234" },
+  //     { title: "Green Website", id: "defg56789" },
+  //   ]);
 
   //       console.log('context-->', context.env)
 
   const data = await getById(context.env.KVDATA, "host::sites");
 
-  console.log('data.keys', data)
+  console.log("data.keys", data);
 
   const list = data.map((item) => item.title);
 
-//   console.log("list-->", list);
+  //   console.log("list-->", list);
 
   return <Top messages={list} />;
 }
