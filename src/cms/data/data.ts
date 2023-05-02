@@ -16,8 +16,12 @@ export function getId(length) {
   return res;
 }
 
-export function getData(db, prefix = '') {
-  return db.list({ prefix});
+export function getData(db, prefix = "") {
+  return db.list({ prefix });
+}
+
+export function getById(db, key) {
+  return db.get(key, { type: "json" });
 }
 
 export function putData(db, site, contentType, value) {
@@ -26,5 +30,5 @@ export function putData(db, site, contentType, value) {
 }
 
 export function add(a, b) {
-    return a + b;
-  }
+  return a + b;
+}

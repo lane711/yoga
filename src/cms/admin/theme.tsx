@@ -1,5 +1,5 @@
 import { jsx } from "hono/jsx";
-import { getData, putData } from "../data/data";
+import { getById, getData, putData } from "../data/data";
 declare const KVDATA: KVNamespace;
 
 const Layout = (props: { children?: string }) => {
@@ -240,11 +240,32 @@ export async function loadModules(context) {
 
   //       console.log('context-->', context.env)
 
-  const data = await getData(context.env.KVDATA, 'site1::module');
+  const data = await getData(context.env.KVDATA, "site1::module");
 
   const list = data.keys.map((item) => item.name);
 
   console.log("list-->", list);
+
+  return <Top messages={list} />;
+}
+
+export async function loadSites(context) {
+  // console.log('context-->', context.env)
+
+//   await putData(context.env.KVDATA, "host", "sites", [
+//     { title: "Blue Website", id: "abcd1234" },
+//     { title: "Green Website", id: "defg56789" },
+//   ]);
+
+  //       console.log('context-->', context.env)
+
+  const data = await getById(context.env.KVDATA, "host::sites");
+
+  console.log('data.keys', data)
+
+  const list = data.map((item) => item.title);
+
+//   console.log("list-->", list);
 
   return <Top messages={list} />;
 }

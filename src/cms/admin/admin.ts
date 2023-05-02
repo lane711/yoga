@@ -1,6 +1,6 @@
 // import { Hono } from 'hono'
 // const app = new Hono()
-import { loadAdmin, loadModules } from "./theme"
+import { loadAdmin, loadModules, loadSites } from "./theme"
 // const html = `
 // <!DOCTYPE html>
 // <html>
@@ -30,5 +30,7 @@ import { loadAdmin, loadModules } from "./theme"
 export function setAdmin(app) {  
   app.get('/admin', async (c) => c.html(await loadAdmin(c)))
   app.get('/admin/modules', async (c) => c.html(await loadModules(c)))
+  app.get('/admin/sites', async (c) => c.html(await loadSites(c)))
+
 
 }
