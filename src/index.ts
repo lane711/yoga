@@ -1,7 +1,6 @@
 import { Hono } from "hono";
 import { setupGraphQl } from "./cms/graphql/graphql";
 import { setAdmin } from "./cms/admin/admin";
-import { getData } from "./cms/data/data";
 const app = new Hono();
 
 declare const KVDATA: KVNamespace;

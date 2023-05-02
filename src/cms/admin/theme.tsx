@@ -33,7 +33,7 @@ const Layout = (props: { children?: string }) => {
               <div class="flex flex-col items-center w-full mt-3 border-t border-gray-700">
                 <a
                   class="flex items-center w-full h-12 px-3 mt-2 rounded hover:bg-gray-700 hover:text-gray-300"
-                  href="#"
+                  href="/admin/sites"
                 >
                   <svg
                     class="w-6 h-6 stroke-current"
@@ -49,11 +49,11 @@ const Layout = (props: { children?: string }) => {
                       d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
                     />
                   </svg>
-                  <span class="ml-2 text-sm font-medium">Content</span>
+                  <span class="ml-2 text-sm font-medium">Sites</span>
                 </a>
                 <a
                   class="flex items-center w-full h-12 px-3 mt-2 rounded hover:bg-gray-700 hover:text-gray-300"
-                  href="#"
+                  href="/admin"
                 >
                   <svg
                     class="w-6 h-6 stroke-current"
@@ -69,11 +69,11 @@ const Layout = (props: { children?: string }) => {
                       d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                     />
                   </svg>
-                  <span class="ml-2 text-sm font-medium">Search</span>
+                  <span class="ml-2 text-sm font-medium">Content</span>
                 </a>
                 <a
                   class="flex items-center w-full h-12 px-3 mt-2 text-gray-200 bg-gray-700 rounded"
-                  href="#"
+                  href="/admin/modules"
                 >
                   <svg
                     class="w-6 h-6 stroke-current"
@@ -89,11 +89,11 @@ const Layout = (props: { children?: string }) => {
                       d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
                     />
                   </svg>
-                  <span class="ml-2 text-sm font-medium">Insights</span>
+                  <span class="ml-2 text-sm font-medium">Modules</span>
                 </a>
                 <a
                   class="flex items-center w-full h-12 px-3 mt-2 rounded hover:bg-gray-700 hover:text-gray-300"
-                  href="#"
+                  href="/admin/modules"
                 >
                   <svg
                     class="w-6 h-6 stroke-current"
@@ -236,7 +236,7 @@ export async function loadAdmin(context) {
 export async function loadModules(context) {
   // console.log('context-->', context.env)
 
-  await putData(context.env.KVDATA, "site1", "module", { title: "blog" });
+//   await putData(context.env.KVDATA, "site1", "module", { title: "blog" });
 
   //       console.log('context-->', context.env)
 
