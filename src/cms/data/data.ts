@@ -1,7 +1,7 @@
 // declare const KVDATA: KVNamespace;
 
-function getKey(site, contentType) {
-  return `${site}::${getTicksSortKey()}::${contentType}::${getId(7)}`;
+export function getKey(site, schema) {
+  return `${site}::${schema}::${getTicksSortKey()}::${getId(7)}`;
 }
 
 function getTicksSortKey() {
@@ -25,6 +25,6 @@ export function putData(db, site, contentType, value) {
   return db.put(key, JSON.stringify(value));
 }
 
-function sum(a, b) {
+export function add(a, b) {
     return a + b;
   }
