@@ -24,3 +24,7 @@ export function putData(db, site, contentType, value) {
   const key = getKey(site, contentType);
   return db.put(key, JSON.stringify(value));
 }
+
+function sum(a, b) {
+    return a + b;
+  }
