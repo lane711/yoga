@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "wrangler dev",
+    "deploy": "wrangler publish",
     "check": "tsc --pretty --noEmit"
   },
   "dependencies": {

@@ -5,11 +5,12 @@ workers_dev = true
 main = "src/index.ts"
 compatibility_flags = ["streams_enable_constructors"]
 
+kv_namespaces = [
+  { binding = "KVDATA", preview_id = "43d5f62ebc9f4e9cafa30671613cbfa0", id = "43d5f62ebc9f4e9cafa30671613cbfa0" }
+]
+
 [dev]
 ip = "0.0.0.0"
 port = 3077
 local_protocol = "http"
 
-kv_namespaces = [
-  { binding = "KVDATA", preview_id = "43d5f62ebc9f4e9cafa30671613cbfa0", id = "43d5f62ebc9f4e9cafa30671613cbfa0" }
-]

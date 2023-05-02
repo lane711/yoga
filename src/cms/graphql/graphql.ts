@@ -4,7 +4,7 @@ declare const KVDATA: KVNamespace;
 
 export function setupGraphQl(app) {
   // app.all('/graphql', (c) => c.text('graph'))
-  app.use("/graphql", graphql);
+  app.all("/graphql", graphql);
 
 }
 

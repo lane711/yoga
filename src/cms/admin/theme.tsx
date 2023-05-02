@@ -1,12 +1,5 @@
-import { Hono } from "hono";
-import { graphql } from "./cms/graphql/graphql";
-
-const app = new Hono();
-
-export interface Env {
-  DB: D1Database;
-}
-
+import { jsx } from 'hono/jsx'
+import { getData, putData } from '../data/data';
 declare const KVDATA: KVNamespace;
 
 const Layout = (props: { children?: string }) => {
@@ -224,85 +217,33 @@ const Top = (props: { messages: string[] }) => {
   );
 };
 
-// app.get("/", (c) => {
-//   const messages = ["Good Morning", "Good Evening", "Good Night"];
-//   return c.html(<Top messages={messages} />);
+
+export async function loadAdmin(context){
+
+    console.log('context-->', context.env)
+
+
+//     await putData(context.env.KVDATA, 'site1', 'blog', {title: 'post1'});
+
+//       console.log('context-->', context.env)
+
+  const data = await getData(context.env.KVDATA);
+
+
+  const list = data.keys.map(item => item.name)
+
+  console.log("list-->", list);
+
+
+    return  <Top messages={list} />
+}
+
+// app.get("/new", async (c) => {
+//   KVDATA.put(`todo_${Date.now()}`, JSON.stringify({ "foo": "bar" }));
+
+//   const list = [];
+
+//   return c.html(<Top messages={list} />);
 // });
 
-app.get("/", async (c) => {
-  const { results } = await c.env.DB.prepare(
-    "SELECT * FROM Customers WHERE CompanyName = ?"
-  )
-    .bind("Bs Beverages")
-    .all();
-  // return Response.json(results);
 
-  const list = results.map((r) => r.ContactName);
-  console.log("data===>", list);
-
-  return c.html(<Top messages={list} />);
-});
-
-app.get("/new", async (c) => {
-  KVDATA.put(`todo_${Date.now()}`, JSON.stringify({ "foo": "bar" }));
-
-  const list = [];
-
-  return c.html(<Top messages={list} />);
-});
-
-// import { adminRouter } from "./cms/admin/router";
-
-// const app = new Hono()
-
-// declare const KVDATA: KVNamespace;
-
-// app.get("/", () => {
-//   return new Response(
-//     "Hello, world! This is the root page of your Worker template."
-//   );
-// });
-
-// app.get("/about", () => {
-//   return new Response("About us");
-// });
-
-app.all("/graphql", graphql.handle);
-
-// const app = new Hono()
-
-// const Layout = (props: { children?: string }) => {
-//   return (
-//     <html>
-//       <body>{props.children}</body>
-//     </html>
-//   )
-// }
-
-// const Top = (props: { messages: string[] }) => {
-//   return (
-//     <Layout>
-//       <h1>Hello Hono!</h1>
-//       <ul>
-//         {props.messages.map((message) => {
-//           return <li>{message}!!</li>
-//         })}
-//       </ul>
-//     </Layout>
-//   )
-// }
-
-// app.get('/admin', (c) => {
-//   const messages = ['Good Morning', 'Good Evening', 'Good Night']
-//   return c.html(<Top messages={messages} />)
-// })
-
-// 404 for everything else
-app.all("*", () => new Response("Sorry, Not Found.", { status: 404 }));
-
-// // attach the router "handle" to the event handler
-// // addEventListener("fetch", (event) =>
-// //   event.respondWith(router.handle(event.request))
-// // );
-
-export default app;
