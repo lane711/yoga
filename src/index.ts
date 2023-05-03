@@ -1,21 +1,22 @@
 import { Hono } from "hono";
 import { setupGraphQl } from "./cms/graphql/graphql";
 import { setAdmin } from "./cms/admin/admin";
-// import { serveStatic } from 'hono/cloudflare-workers';
+import { serveStatic } from 'hono/cloudflare-workers';
 
 const app = new Hono();
 
 declare const KVDATA: KVNamespace;
 
-app.get("/", async ({ env }) => {
+app.get("/", async (c) => c.html("go to /admin"));
 
-  console.log('home env -->', env)
-  return new Response(
-    "Hello, world! This is the root page of your Worker template."
-  );
-});
 
-// app.use('/static/*', serveStatic({ root: './' }))
+app.use('/*', serveStatic({ root: './' }))
+app.use('/favicon.ico', serveStatic({ path: './favicon.ico' }))
+
+
+setAdmin(app);
+setupGraphQl(app);
+
 
 
 app.get("/about", () => {
@@ -26,8 +27,7 @@ app.get("/about", () => {
 
 // app.all("/admin", adminRouter.handle);
 
-setAdmin(app);
-setupGraphQl(app);
+
 
 // 404 for everything else
 app.all("*", () => new Response("Not Found.", { status: 404 }));

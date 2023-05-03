@@ -9,6 +9,9 @@ kv_namespaces = [
   { binding = "KVDATA", preview_id = "43d5f62ebc9f4e9cafa30671613cbfa0", id = "43d5f62ebc9f4e9cafa30671613cbfa0" }
 ]
 
+[site]
+bucket = "./public"
+
 [dev]
 ip = "0.0.0.0"
 port = 3077
