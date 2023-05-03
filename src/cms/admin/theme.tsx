@@ -20,7 +20,7 @@ const Layout = (props: { children?: string }) => {
   </head>
 
   <body class="bg-dark">
-    <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
+    <nav class="navbar navbar-dark sticky-top bg-darker flex-md-nowrap p-0">
       <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">
         <img class="logo" src="/images/sonicjs-logo.svg"/>
       </a>
@@ -34,7 +34,7 @@ const Layout = (props: { children?: string }) => {
 
     <div class="container-fluid">
       <div class="row">
-        <nav class="col-md-2 d-none d-md-block bg-dark text-muted sidebar">
+        <nav class="col-md-2 d-none d-md-block bg-darker text-muted sidebar">
           <div class="sidebar-sticky">
             <ul class="nav flex-column">
               <li class="nav-item">
