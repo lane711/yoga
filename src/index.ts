@@ -1,6 +1,8 @@
 import { Hono } from "hono";
 import { setupGraphQl } from "./cms/graphql/graphql";
 import { setAdmin } from "./cms/admin/admin";
+// import { serveStatic } from 'hono/cloudflare-workers';
+
 const app = new Hono();
 
 declare const KVDATA: KVNamespace;
@@ -12,6 +14,9 @@ app.get("/", async ({ env }) => {
     "Hello, world! This is the root page of your Worker template."
   );
 });
+
+// app.use('/static/*', serveStatic({ root: './' }))
+
 
 app.get("/about", () => {
   return new Response("About us");
