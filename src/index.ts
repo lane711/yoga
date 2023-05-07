@@ -7,7 +7,7 @@ const app = new Hono();
 
 declare const KVDATA: KVNamespace;
 
-app.get("/", async (c) => c.html("go to /admin"));
+app.get('/', (c) => c.redirect('/admin'))
 
 
 app.use('/*', serveStatic({ root: './' }))
