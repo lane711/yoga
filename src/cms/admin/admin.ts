@@ -1,7 +1,13 @@
 // import { Hono } from 'hono'
 // const app = new Hono()
 import { loadForm } from "./forms/form";
-import { loadAdmin, loadContentType, loadContentTypes, loadModules, loadSites } from "./theme";
+import {
+  loadAdmin,
+  loadContentType,
+  loadContentTypes,
+  loadModules,
+  loadSites,
+} from "./theme";
 // const html = `
 // <!DOCTYPE html>
 // <html>
@@ -33,9 +39,71 @@ export function setAdmin(app) {
   app.get("/admin/sites", async (c) => c.html(await loadSites(c)));
   app.get("/admin/modules", async (c) => c.html(await loadModules(c)));
 
-  app.get("/admin/content-types", async (c) => c.html(await loadContentTypes(c)));
-  app.get("/admin/content-types/*", async (c) => c.html(await loadContentType(c)));
-
+  app.get("/admin/content-types", async (c) =>
+    c.html(await loadContentTypes(c))
+  );
+  app.get("/admin/content-types/*", async (c) =>
+    c.html(await loadContentType(c))
+  );
 
   app.get("/api/forms", async (c) => c.html(await loadForm(c)));
+
+  app.get("/api/form-components", (c) => {
+    return c.json([
+      {
+        type: 'textfield',
+        key: 'firstName',
+        label: 'ABC First Name',
+        placeholder: 'Enter your first name.',
+        input: true,
+        tooltip: 'Enter your <strong>First Name</strong>',
+        description: 'Enter your <strong>First Name</strong>'
+      },
+      {
+        type: 'textfield',
+        key: 'lastName',
+        label: 'Last Name',
+        placeholder: 'Enter your last name',
+        input: true,
+        tooltip: 'Enter your <strong>Last Name</strong>',
+        description: 'Enter your <strong>Last Name</strong>'
+      },
+      {
+        type: "select",
+        label: "Favorite Things",
+        key: "favoriteThings",
+        placeholder: "These are a few of your favorite things...",
+        data: {
+          values: [
+            {
+              value: "raindropsOnRoses",
+              label: "Raindrops on roses"
+            },
+            {
+              value: "whiskersOnKittens",
+              label: "Whiskers on Kittens"
+            },
+            {
+              value: "brightCopperKettles",
+              label: "Bright Copper Kettles"
+            },
+            {
+              value: "warmWoolenMittens",
+              label: "Warm Woolen Mittens"
+            }
+          ]
+        },
+        dataSrc: "values",
+        template: "<span>{{ item.label }}</span>",
+        multiple: true,
+        input: true
+      },
+      {
+        type: 'button',
+        action: 'submit',
+        label: 'Submit',
+        theme: 'primary'
+      }
+    ]);
+  });
 }
