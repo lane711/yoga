@@ -2,8 +2,12 @@ import { jsx } from "hono/jsx";
 import { getById, getData, getDataByPrefix, putData } from "../data/data";
 declare const KVDATA: KVNamespace;
 
-const Layout = (props: { children?: string , formComponents?: [], screenTitle?: string}) => {
-  console.log('7777777777777', props.formComponents)
+const Layout = (props: {
+  children?: string;
+  formComponents?: [];
+  screenTitle?: string;
+}) => {
+  console.log("7777777777777", props.formComponents);
   return (
     <html lang="en">
       <head>
@@ -22,10 +26,10 @@ const Layout = (props: { children?: string , formComponents?: [], screenTitle?: 
           rel="stylesheet"
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         />
-        {/* <link
+        <link
           rel="stylesheet"
           href="https://cdn.form.io/formiojs/formio.full.min.css"
-        /> */}
+        />
       </head>
 
       <body class="bg-dark text-light">
@@ -45,21 +49,22 @@ const Layout = (props: { children?: string , formComponents?: [], screenTitle?: 
 
         <div class="container-fluid">
           <div class="row">
-            <nav class="col-md-2 d-none d-md-block bg-darker text-muted sidebar">
+            <nav class="col-md-2 d-none d-md-block bg-darker text-muted sidebar px-0">
               <div class="sidebar-sticky">
                 <ul class="nav flex-column">
-                  <li class="nav-item">
-                    <a class="nav-link text-light" href="/admin">
-                      <span data-feather="home"></span>
-                      Content <span class="sr-only">(current)</span>
-                    </a>
-                  </li>
                   <li class="nav-item">
                     <a class="nav-link text-light" href="/admin/sites">
                       <span data-feather="file"></span>
                       Sites
                     </a>
                   </li>
+                  <li class="nav-item">
+                    <a class="nav-link text-light" href="/admin">
+                      <span data-feather="home"></span>
+                      Content <span class="sr-only">(current)</span>
+                    </a>
+                  </li>
+
                   <li class="nav-item">
                     <a class="nav-link text-light" href="/admin/modules">
                       <span data-feather="shopping-cart"></span>
@@ -135,8 +140,8 @@ const Top = (props: { items: object[] }) => {
 };
 
 const Form = (props: { title: string }) => {
-  const formComponents = ["test","bar"];
-  console.log(formComponents)
+  const formComponents = ["test", "bar"];
+  console.log(formComponents);
   return (
     <Layout screenTitle={props.screenTitle} formComponents>
       form here for {props.title}
