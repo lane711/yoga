@@ -22,6 +22,10 @@ h1, h2, .h2 {
   color: var(--orange);
 }
 
+
+.btn-warning {
+  background-color: var(--orange);
+}
 /*
    * Sidebar
    */

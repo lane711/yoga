@@ -1,5 +1,5 @@
 import { jsx } from "hono/jsx";
-import { getById, getData, getDataByPrefix, putData } from "../data/data";
+import { getById, getDataByPrefix, putData } from "../data/data";
 declare const KVDATA: KVNamespace;
 
 const Layout = (props: {
@@ -7,8 +7,6 @@ const Layout = (props: {
   formComponents?: any[];
   screenTitle?: string;
 }) => {
-  console.log("7777777777777", props.formComponents);
-  
   return (
     <html lang="en">
       <head>
@@ -106,18 +104,24 @@ const Layout = (props: {
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
         <script src="https://cdn.usebootstrap.com/bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
         <script src="https://cdn.form.io/formiojs/formio.full.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js" integrity="sha512-uMtXmF28A2Ab/JJO2t/vYhlaa/3ahUOgj1Zf27M5rOo8/+fcTUVH0/E0ll68njmjrLqOBjXM3V9NiPFL5ywWPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script
+          src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"
+          integrity="sha512-uMtXmF28A2Ab/JJO2t/vYhlaa/3ahUOgj1Zf27M5rOo8/+fcTUVH0/E0ll68njmjrLqOBjXM3V9NiPFL5ywWPQ=="
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer"
+        ></script>
         <script src="/js/admin.js"></script>
+        <script src="/js/form.js"></script>
       </body>
     </html>
   );
 };
 
-const Top = (props: { items: object[], screenTitle:string }) => {
+const Top = (props: { items: object[]; screenTitle: string }) => {
   return (
     <Layout screenTitle={props.screenTitle}>
       <ul>
-        {props.items.map((item) => {
+        {props.items.map((item:any) => {
           return (
             <li>
               <a class="text-light" href={item.path}>
@@ -131,21 +135,16 @@ const Top = (props: { items: object[], screenTitle:string }) => {
   );
 };
 
-const Form = (props: { title: string, screenTitle:string }) => {
-  const formComponents = [{"test":"bar"}];
-
-  // console.log(formComponents);
+const Form = (props: { title: string; screenTitle: string }) => {
   return (
-    <Layout screenTitle={props.screenTitle}>
+    <Layout screenTitle={props.screenTitle + ": " + props.title}>
+      <div class="pb-2 mb-3">
+        <button id="contentFormSaveButton" class="btn btn-warning" onclick="onContentFormSave()" disabled>
+          Save Content Type
+        </button>{" "}
+      </div>
 
-      form here for {props.title}
       <div id="formio"></div>
-
-{
-      <script>
-          const formComponents = `${formComponents}`;
-        </script>
-}
     </Layout>
   );
 };

@@ -27,7 +27,7 @@ export function setupGraphQl(app) {
   );
 }
 
-app.fire();
+// app.fire();
 
 // const graphql = createYoga({
 //   schema: createSchema({
