@@ -1,4 +1,5 @@
 import { getForm, loadForm } from "../admin/forms/form";
+import { putData } from "../data/data";
 
 export function setupApi(app) {
 
@@ -13,7 +14,13 @@ export function setupApi(app) {
   });
 
   app.post("/api/form-components", async (c) => {
-    console.log('formComponents', c.req.paramData);
+    const param = await c.req.json()
+
+    console.log('formComponents-->', param);
+    //put in kv
+    const result = await putData(c.env.KVDATA, 'site1', 'content-type', param, "site1::content-type::blog-post");
+
+    console.log('form put', result);
     return c.text('Created!', 201);
   });
 }

@@ -1,5 +1,6 @@
-import { app } from './api'
+// import { app } from './api'
 
+import app from '../../index'
 
 describe('API Tests', () => {
     test('GET forms', async () => {

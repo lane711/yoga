@@ -150,6 +150,10 @@ const Form = (props: { title: string; screenTitle: string }) => {
 };
 
 export async function loadAdmin(context) {
+
+    await putData(context.env.KVDATA, 'site1', 'content', {title: '20230508'});
+
+
   const data = await getDataByPrefix(context.env.KVDATA);
 
   const list = data.keys.map((item) => {
