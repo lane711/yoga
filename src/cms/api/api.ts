@@ -1,5 +1,5 @@
 import { getForm, loadForm } from "../admin/forms/form";
-import { putData } from "../data/data";
+import { getById, putData } from "../data/data";
 
 export function setupApi(app) {
 
@@ -9,8 +9,13 @@ export function setupApi(app) {
 
   app.get("/api/forms", async (c) => c.html(await loadForm(c)));
 
-  app.get("/api/form-components", async (c) => {
-    return c.json(await getForm());
+  app.get("/api/form-components/:contentType", async (c) => {
+    const id = c.req.param('contentType')
+
+    console.log('id--->', id)
+
+    const ct = await getById(c.env.KVDATA, `${id}`);
+    return c.json(ct);
   });
 
   app.post("/api/form-components", async (c) => {

@@ -1,7 +1,10 @@
 //        Formio.builder(document.getElementById('builder'), {}, {});
 var contentTypeComponents;
 
-axios.get("/api/form-components").then((response) => {
+const contentType = window.location.href.split("/").pop();
+console.log('contentType', contentType)
+
+axios.get(`/api/form-components/${contentType}`).then((response) => {
   console.log(response.data);
   console.log(response.status);
   console.log(response.statusText);
@@ -28,7 +31,6 @@ axios.get("/api/form-components").then((response) => {
 
 function onContentFormSave() {
   console.log("saving content type", contentTypeComponents);
-  debugger;
   axios.post("/api/form-components",contentTypeComponents).then((response) => {
     console.log(response.data);
     console.log(response.status);
