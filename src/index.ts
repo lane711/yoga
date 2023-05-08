@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { setupGraphQl } from "./cms/graphql/graphql";
 import { setAdmin } from "./cms/admin/admin";
-// import { serveStatic } from 'hono/cloudflare-workers';
+import { serveStatic } from 'hono/cloudflare-workers';
 import { setupApi } from "./cms/api/api";
 
 const app = new Hono();
