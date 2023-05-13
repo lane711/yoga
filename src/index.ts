@@ -13,12 +13,12 @@ declare const KVDATA: KVNamespace;
 
 app.get("/", (c) => c.redirect("/admin"));
 
-  // app.use("/*", serveStatic({ root: "./" }));
-  // app.use("/favicon.ico", serveStatic({ path: "./favicon.ico" }));
+  app.use("/*", serveStatic({ root: "./" }));
+  app.use("/favicon.ico", serveStatic({ path: "./favicon.ico" }));
 
 
-// setupApi(app);
-// setAdmin(app);
+setupApi(app);
+setAdmin(app);
 // setupGraphQl(app);
 app.use('*', poweredBy())
 

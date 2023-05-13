@@ -1,6 +1,4 @@
-import { jsx } from "hono/jsx";
 import { getById, getDataByPrefix, putData } from "../data/data";
-declare const KVDATA: KVNamespace;
 
 const Layout = (props: {
   children?: string;
@@ -117,7 +115,7 @@ const Layout = (props: {
   );
 };
 
-const Top = (props: { items: object[]; screenTitle: string }) => {
+export const Top = (props: { items: object[]; screenTitle: string }) => {
   return (
     <Layout screenTitle={props.screenTitle}>
       <ul>
@@ -131,6 +129,14 @@ const Top = (props: { items: object[]; screenTitle: string }) => {
           );
         })}
       </ul>
+    </Layout>
+  );
+};
+
+export const Detail = (props: { item: any; screenTitle: string }) => {
+  return (
+    <Layout screenTitle={props.screenTitle}>
+      {props.item}
     </Layout>
   );
 };
@@ -172,29 +178,46 @@ export async function loadModules(context) {
   const list = data.keys.map((item) => {
     return {
       title: item.name,
-      path: `/admin/content-types/${item.name}`,
+      path: `/admin/modules/${item.name}`,
     };
   });
 
   return <Top items={list} screenTitle="Modules" />;
 }
 
-export async function loadSites(context) {
-  const data = await getById(context.env.KVDATA, "host::sites");
+export async function loadModule(context) {
+  console.log('context url', context.req)
+  const id =     context.req.path.split('/').pop();
+  console.log('context id', id)
 
-  // console.log('data site', data[0])
-  const list = data.map((item) => {
-    return {
-      title: item.title,
-      path: `/admin/content-types/${item.name}`,
-    };
-  });
+  const data = await getById(
+    context.env.KVDATA,
+    id
+  );
 
-  return <Top items={list} screenTitle="Sites" />;
+  console.log('data module', data);
+
+
+
+  return <Detail item={data.title} screenTitle="Module" />;
 }
 
+// export async function loadSites(context) {
+//   const data = await getById(context.env.KVDATA, "host::sites");
+
+//   // console.log('data site', data[0])
+//   const list = data.map((item) => {
+//     return {
+//       title: item.title,
+//       path: `/admin/content-types/${item.name}`,
+//     };
+//   });
+
+//   return <Top items={list} screenTitle="Sites" />;
+// }
+
 export async function loadContentTypes(context) {
-  // await putData(context.env.KVDATA, 'site1', 'content-type', {title: 'blog-post'}, "site1::content-type::blog-post");
+  console.log("context KVDATA", context.env.KVDATA);
 
   const data = await getDataByPrefix(context.env.KVDATA, "site1::content-type");
   console.log("data", data.keys[0]);
